@@ -38,7 +38,7 @@ app.post("/api/game", (req, res) => {
   const game = new Game({
     number: parseInt(gameInfo.number),
     sequence: gameInfo.sequence,
-    score: parseInt(gameInfo.score),
+    score: gameInfo.score ? parseInt(gameInfo.score) : null,
     order: gameInfo.order,
     tries: parseInt(gameInfo.tries),
     date: newDate(),

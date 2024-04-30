@@ -1,45 +1,38 @@
-const failInput = `Connections
-Puzzle #282
-🟨🟨🟨🟨
-🟦🟦🟦🟦
-🟪🟪🟩🟩
-🟪🟩🟪🟩
-🟩🟪🟪🟩
-🟪🟪🟩🟩`;
-
-const successInput = `Connections
-Puzzle #282
-🟨🟨🟨🟨
-🟦🟦🟦🟦
-🟪🟪🟩🟩
-🟪🟩🟪🟩
-🟩🟩🟩🟩
-🟪🟪🟪🟪`;
-
-const perfectInput = `Connections
-Puzzle #282
-🟪🟪🟪🟪
-🟦🟦🟦🟦
-🟩🟩🟩🟩
-🟨🟨🟨🟨`;
-
-const colorToChar = (input) => {
-  let sequence = input.toString();
-  const colorEmojis = ["🟨", "🟩", "🟦", "🟪"];
-  const colorLetters = ["y", "g", "b", "p"];
-  for (let i = 0; i < 4; i++) {
-    sequence = sequence.replaceAll(colorEmojis[i], colorLetters[i]);
-  }
-  return sequence;
+// const failInput = `Connections
+// Puzzle #282
+// 🟨🟨🟨🟨
+// 🟦🟦🟦🟦
+// 🟪🟪🟩🟩
+// 🟪🟩🟪🟩
+// 🟩🟪🟪🟩
+// 🟪🟪🟩🟩`;
+const failInput = {
+  number: "282",
+  sequence: ["yyyy", "bbbb", "ppgg", "pgpg", "gppg", "ppgg"],
 };
 
-const getGameData = (input) => {
-  const game = {};
-  let inputLines = input.split("\n");
-  game.puzzleNum = inputLines[1].slice(inputLines[1].indexOf("#") + 1);
-  game.sequence = colorToChar(inputLines.slice(2));
+// const successInput = `Connections
+// Puzzle #282
+// 🟨🟨🟨🟨
+// 🟦🟦🟦🟦
+// 🟪🟪🟩🟩
+// 🟪🟩🟪🟩
+// 🟩🟩🟩🟩
+// 🟪🟪🟪🟪`;
+const successInput = {
+  number: "282",
+  sequence: ["yyyy", "bbbb", "ppgg", "pgpg", "gggg", "pppp"],
+};
 
-  return game;
+// const perfectInput = `Connections
+// Puzzle #282
+// 🟪🟪🟪🟪
+// 🟦🟦🟦🟦
+// 🟩🟩🟩🟩
+// 🟨🟨🟨🟨`;
+const perfectInput = {
+  number: "282",
+  sequence: ["pppp", "bbbb", "gggg", "yyyy"],
 };
 
 const checkValidLine = (line) => {
@@ -68,7 +61,7 @@ const checkIfSuccess = (lines) => {
   }
 };
 
-const scoreGame = (game) => {
+const scoreGame = (lines) => {
   const worths = {
     y: 1,
     g: 2,
@@ -77,7 +70,6 @@ const scoreGame = (game) => {
   };
 
   let score = 0;
-  const lines = game.sequence.split(",");
   for (let i = 0; i < 4; i++) {
     if (checkValidLine(lines[i])) {
       score = score + (4 - i) * worths[lines[i][0]];
@@ -87,10 +79,10 @@ const scoreGame = (game) => {
   return score;
 };
 
-const parseInput = (input) => {
-  const game = getGameData(input);
-  const lines = game.sequence.split(",");
-  game.numberTries = lines.length;
+const parseGame = (input) => {
+  const game = input;
+  const lines = game.sequence;
+  game.tries = lines.length;
 
   if (checkIfSuccess(lines)) {
     const positions = {
@@ -104,17 +96,17 @@ const parseInput = (input) => {
       .sort(([, a], [, b]) => a - b)
       .map(([key]) => key);
 
-    game.orderOfColors = ordered;
-    game.score = scoreGame(game);
+    game.order = ordered;
+    game.score = scoreGame(lines);
   } else {
-    game.orderOfColors = [null, null, null, null];
-    game.score = -1;
+    game.order = null;
+    game.score = null;
   }
   return game;
 };
 
-console.log(parseInput(failInput));
-console.log(parseInput(successInput));
-console.log(parseInput(perfectInput));
+// console.log(parseGame(failInput));
+// console.log(parseGame(successInput));
+// console.log(parseGame(perfectInput));
 
-export default parseInput;
+export default parseGame;

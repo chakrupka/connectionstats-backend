@@ -7,6 +7,7 @@ const gameSchema = new mongoose.Schema({
   order: Array,
   tries: Number,
   date: String,
+  user: String,
 });
 
 gameSchema.set("toJSON", {

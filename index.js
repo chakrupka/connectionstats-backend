@@ -42,6 +42,7 @@ app.post("/api/game", (req, res) => {
     order: gameInfo.order,
     tries: parseInt(gameInfo.tries),
     date: newDate(),
+    user: gameInfo.user ? gameInfo.user : "Anonymous",
   });
 
   game.save().then((savedGame) => {

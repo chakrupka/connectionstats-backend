@@ -50,6 +50,12 @@ app.post("/api/game", (req, res) => {
   });
 });
 
+app.get("/api/today", (req, res) => {
+  Game.find({ date: newDate() }).then((games) => {
+    res.json(games);
+  });
+});
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

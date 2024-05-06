@@ -5,6 +5,4 @@ const newDate = () => {
   return dt.toFormat("yyyy-LL-dd");
 };
 
-console.log(newDate());
-
 export default newDate;

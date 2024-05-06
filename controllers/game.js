@@ -33,4 +33,10 @@ gamesRouter.get("/today", (req, res) => {
   });
 });
 
+gamesRouter.get("/all", (req, res) => {
+  Game.find({}).then((games) => {
+    res.json(games);
+  });
+});
+
 export default gamesRouter;

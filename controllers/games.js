@@ -4,7 +4,7 @@ import parseGame from "../functions/parseGame.js";
 import Game from "../models/game.js";
 export const gamesRouter = Router();
 
-gamesRouter.post("/game", (req, res) => {
+gamesRouter.post("/game", async (req, res) => {
   const body = req.body;
   if (body.content === undefined) {
     return res.status(400).json({ error: "content missing" });
@@ -22,21 +22,26 @@ gamesRouter.post("/game", (req, res) => {
     user: gameInfo.user ? gameInfo.user : "Anonymous",
   });
 
-  game.save().then((savedGame) => {
-    res.json(savedGame);
-  });
+  const savedGame = await game.save();
+  res.status(201).json(savedGame);
 });
 
-gamesRouter.get("/today", (req, res) => {
-  Game.find({ date: newDate() }).then((games) => {
-    res.json(games);
-  });
+gamesRouter.get("/today", async (req, res) => {
+  const todaysGames = await Game.find({ date: newDate() });
+  if (todaysGames) {
+    res.json(todaysGames);
+  } else {
+    res.status(404).end();
+  }
 });
 
-gamesRouter.get("/all", (req, res) => {
-  Game.find({}).then((games) => {
-    res.json(games);
-  });
+gamesRouter.get("/all", async (req, res) => {
+  const allGames = await Game.find({});
+  if (allGames) {
+    res.json(allGames);
+  } else {
+    res.status(404).end();
+  }
 });
 
 export default gamesRouter;

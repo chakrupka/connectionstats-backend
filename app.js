@@ -4,7 +4,7 @@ import config from "./utils/config.js";
 import logger from "./utils/logger.js";
 import middleware from "./utils/middleware.js";
 import mongoose from "mongoose";
-import gamesRouter from "./controllers/game.js";
+import gamesRouter from "./controllers/games.js";
 const app = express();
 
 mongoose.set("strictQuery", false);

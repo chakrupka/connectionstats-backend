@@ -1,0 +1,48 @@
+const testGames = [
+  {
+    _id: "66324fe8a2c6d276411d684a",
+    number: 325,
+    sequence: ["gggb", "gggb", "gggg", "bbyp", "ypyy"],
+    score: null,
+    order: null,
+    tries: 5,
+    date: "2024-05-01",
+    user: "Cat",
+    __v: 0,
+  },
+  {
+    _id: "66324ff9a2c6d276411d684c",
+    number: 325,
+    sequence: ["bggb", "bypb", "bbbb", "gggg", "pppy", "pppp", "yyyy"],
+    score: 8,
+    order: ["b", "g", "p", "y"],
+    tries: 7,
+    date: "2024-05-01",
+    user: "Cha",
+    __v: 0,
+  },
+  {
+    _id: "66327d5f25c67ac0c7f643af",
+    number: 325,
+    sequence: ["bygy", "gggg", "bpbp", "ypyy", "yyyy", "bpbp"],
+    score: null,
+    order: null,
+    tries: 6,
+    date: "2024-05-01",
+    user: "Anne",
+    __v: 0,
+  },
+  {
+    _id: "663286ab25c67ac0c7f643b4",
+    number: 325,
+    sequence: ["yyyy", "gggg", "bbbb", "pppp"],
+    score: 20,
+    order: ["y", "g", "b", "p"],
+    tries: 4,
+    date: "2024-05-01",
+    user: "Lizzy",
+    __v: 0,
+  },
+];
+
+export default testGames;

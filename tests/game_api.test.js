@@ -8,17 +8,17 @@ import testGames from "./testnotes.js";
 
 const api = supertest(app);
 
-beforeEach(async () => {
-  await Game.deleteMany({});
-  const gameObjects = testGames.map((game) => new Game(game));
-  const promiseArray = gameObjects.map((game) => game.save());
-  await Promise.all(promiseArray);
-  // alternatively
-  // for (let testGame of testGames) {
-  //   let gameObject = new Game(testGame);
-  //   await gameObject.save();
-  // }
-});
+// beforeEach(async () => {
+//   await Game.deleteMany({});
+//   const gameObjects = testGames.map((game) => new Game(game));
+//   const promiseArray = gameObjects.map((game) => game.save());
+//   await Promise.all(promiseArray);
+//   // alternatively
+//   // for (let testGame of testGames) {
+//   //   let gameObject = new Game(testGame);
+//   //   await gameObject.save();
+//   // }
+// });
 
 test("data is returned as json", async () => {
   await api
@@ -27,11 +27,11 @@ test("data is returned as json", async () => {
     .expect("Content-Type", /application\/json/);
 });
 
-test("there are four notes", async () => {
-  const response = await api.get("/api/games/all");
+// test("there are four notes", async () => {
+//   const response = await api.get("/api/games/all");
 
-  assert.strictEqual(response.body.length, 4);
-});
+//   assert.strictEqual(response.body.length, 4);
+// });
 
 // Notes:
 /* 

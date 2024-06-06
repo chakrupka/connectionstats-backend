@@ -2,16 +2,20 @@ import { Router } from "express";
 import newDate from "../functions/date.js";
 import parseGame from "../functions/parseGame.js";
 import Game from "../models/game.js";
-export const gamesRouter = Router();
+import User from "../models/user.js";
+
+const gamesRouter = Router();
 
 gamesRouter.post("/game", async (req, res) => {
   const body = req.body;
-  if (body.content === undefined) {
+  if (
+    ["number", "sequence", "user"].every((prop) => body[prop] === undefined)
+  ) {
     return res.status(400).json({ error: "content missing" });
   }
 
-  const gameInfo = parseGame(body.content);
-
+  const user = await User.findById(body.userID);
+  const gameInfo = parseGame(body);
   const game = new Game({
     number: parseInt(gameInfo.number),
     sequence: gameInfo.sequence,
@@ -19,15 +23,21 @@ gamesRouter.post("/game", async (req, res) => {
     order: gameInfo.order,
     tries: parseInt(gameInfo.tries),
     date: newDate(),
-    user: gameInfo.user ? gameInfo.user : "Anonymous",
+    user: user.id,
   });
 
   const savedGame = await game.save();
+  user.games = user.games.concat(savedGame._id);
+  await user.save();
+
   res.status(201).json(savedGame);
 });
 
 gamesRouter.get("/today", async (req, res) => {
-  const todaysGames = await Game.find({ date: newDate() });
+  const todaysGames = await Game.find({ date: newDate() }).populate("user", {
+    username: 1,
+    name: 1,
+  });
   if (todaysGames) {
     res.json(todaysGames);
   } else {
@@ -36,7 +46,10 @@ gamesRouter.get("/today", async (req, res) => {
 });
 
 gamesRouter.get("/all", async (req, res) => {
-  const allGames = await Game.find({});
+  const allGames = await Game.find({}).populate("user", {
+    username: 1,
+    name: 1,
+  });
   if (allGames) {
     res.json(allGames);
   } else {

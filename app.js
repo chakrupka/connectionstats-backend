@@ -6,6 +6,7 @@ import logger from "./utils/logger.js";
 import middleware from "./utils/middleware.js";
 import mongoose from "mongoose";
 import gamesRouter from "./controllers/games.js";
+import usersRouter from "./controllers/users.js";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(middleware.requestLogger);
 
 app.use("/api/games", gamesRouter);
+app.use("/api/users", usersRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

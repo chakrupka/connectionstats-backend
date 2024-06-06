@@ -33,19 +33,6 @@ test("data is returned as json", async () => {
 //   assert.strictEqual(response.body.length, 4);
 // });
 
-// Notes:
-/* 
-npm run test -- tests/note_api.test.js
-The --tests-by-name-pattern option can be used for running tests with a specific name:
-
-npm run test -- --test-name-pattern="data is returned as json"
-The provided argument can refer to the name of the test or the describe block. 
-It can also contain just a part of the name. The following command will 
-run all of the tests that contain notes in their name:
-
-npm run test -- --test-name-pattern="game"
-*/
-
 after(async () => {
   await mongoose.connection.close();
 });

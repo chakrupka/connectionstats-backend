@@ -3,18 +3,30 @@ import newDate from "../functions/date.js";
 import parseGame from "../functions/parseGame.js";
 import Game from "../models/game.js";
 import User from "../models/user.js";
+import jwt from "jsonwebtoken";
 
 const gamesRouter = Router();
 
+const getToken = (req) => {
+  const auth = req.get("authorization");
+  if (auth && auth.startsWith("Bearer ")) {
+    return auth.replace("Bearer ", "");
+  }
+};
+
 gamesRouter.post("/game", async (req, res) => {
   const body = req.body;
-  if (
-    ["number", "sequence", "user"].every((prop) => body[prop] === undefined)
-  ) {
-    return res.status(400).json({ error: "content missing" });
+
+  const decodedToken = jwt.verify(getToken(req), process.env.SECRET);
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: "token invalid" });
+  }
+  const user = await User.findById(decodedToken.id);
+
+  if (!(body.number && body.sequence)) {
+    return res.status(400).json({ error: "game content missing" });
   }
 
-  const user = await User.findById(body.userID);
   const gameInfo = parseGame(body);
   const game = new Game({
     number: parseInt(gameInfo.number),

@@ -4,17 +4,24 @@
 import { Router } from "express";
 import User from "../models/user.js";
 import newDate from "../functions/date.js";
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
+import validators from "../functions/validators.js";
 
 const usersRouter = Router();
 
 usersRouter.post("/", async (req, res) => {
   const body = req.body;
-  if (["username", "password"].every((prop) => body[prop] === undefined)) {
-    return res.status(400).json({ error: "missing username or password" });
+  if (!(body.username && body.password && body.name)) {
+    return res.status(400).json({ error: "missing content" });
   }
   const { username, name, password } = body;
-  if (username.length <= 2 || password.length <= 7) {
+  if (
+    !validators.validateAll({
+      username: username,
+      password: password,
+      name: name,
+    })
+  ) {
     return res
       .status(400)
       .json({ error: "failed to meet user specification requirements" });

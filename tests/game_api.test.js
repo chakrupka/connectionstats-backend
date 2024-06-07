@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import supertest from "supertest";
 import app from "../app.js";
 import Game from "../models/game.js";
-import testGames from "./testnotes.js";
+import testGames from "./some_games.js";
 
 const api = supertest(app);
 
@@ -27,7 +27,7 @@ test("data is returned as json", async () => {
     .expect("Content-Type", /application\/json/);
 });
 
-// test("there are four notes", async () => {
+// test("there are four games", async () => {
 //   const response = await api.get("/api/games/all");
 
 //   assert.strictEqual(response.body.length, 4);

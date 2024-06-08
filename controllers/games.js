@@ -1,6 +1,6 @@
 import { Router } from "express";
 import newDate from "../functions/date.js";
-import parseGame from "../functions/parseGame.js";
+import parseGame from "../functions/parse_game.js";
 import Game from "../models/game.js";
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";

@@ -23,8 +23,8 @@ gamesRouter.post("/game", async (req, res) => {
   }
   const user = await User.findById(decodedToken.id);
 
-  if (!(body.number && body.sequence)) {
-    return res.status(400).json({ error: "game content missing" });
+  if (!body) {
+    return res.status(400).json({ error: "content missing" });
   }
 
   const gameInfo = parseGame(body);

@@ -63,7 +63,8 @@ gamesRouter.get("/all", async (req, res) => {
     name: 1,
   });
   if (allGames) {
-    res.json(allGames);
+    const gamesWithUser = allGames.filter((game) => game.user != null);
+    res.json(gamesWithUser);
   } else {
     res.status(404).end();
   }

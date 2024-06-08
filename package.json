@@ -12,11 +12,13 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "eslint": "^9.4.0",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
     "luxon": "^3.4.4",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.2"

@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import supertest from "supertest";
 import app from "../app.js";
 import Game from "../models/game.js";
-import testGames from "./testnotes.js";
+import testGames from "./some_games.js";
 
 const api = supertest(app);
 
@@ -27,24 +27,11 @@ test("data is returned as json", async () => {
     .expect("Content-Type", /application\/json/);
 });
 
-// test("there are four notes", async () => {
+// test("there are four games", async () => {
 //   const response = await api.get("/api/games/all");
 
 //   assert.strictEqual(response.body.length, 4);
 // });
-
-// Notes:
-/* 
-npm run test -- tests/note_api.test.js
-The --tests-by-name-pattern option can be used for running tests with a specific name:
-
-npm run test -- --test-name-pattern="data is returned as json"
-The provided argument can refer to the name of the test or the describe block. 
-It can also contain just a part of the name. The following command will 
-run all of the tests that contain notes in their name:
-
-npm run test -- --test-name-pattern="game"
-*/
 
 after(async () => {
   await mongoose.connection.close();

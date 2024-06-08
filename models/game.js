@@ -7,7 +7,10 @@ const gameSchema = new mongoose.Schema({
   order: Array,
   tries: Number,
   date: String,
-  user: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 gameSchema.set("toJSON", {

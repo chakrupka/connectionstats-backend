@@ -15,6 +15,7 @@ usersRouter.post("/", async (req, res) => {
     return res.status(400).json({ error: "missing content" });
   }
   const { username, name, password } = body;
+
   if (
     !validators.validateAll({
       username: username,
@@ -25,6 +26,11 @@ usersRouter.post("/", async (req, res) => {
     return res
       .status(400)
       .json({ error: "failed to meet user specification requirements" });
+  }
+
+  const checkDup = User.find({ username: username.toLowerCase() });
+  if (checkDup !== null) {
+    return res.status(400).json({ error: "username already exists" });
   }
 
   const saltRounds = 10;

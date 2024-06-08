@@ -11,7 +11,9 @@ const loginRouter = Router();
 
 loginRouter.post("/", async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
+
+  const userRegex = new RegExp(`^${username}$`, "i");
+  const user = await User.findOne({ username: { $regex: userRegex } });
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash);
 

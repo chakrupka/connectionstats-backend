@@ -27,8 +27,9 @@ usersRouter.post("/", async (req, res) => {
       .status(400)
       .json({ error: "failed to meet user specification requirements" });
   }
-
-  const checkDup = User.find({ username: username.toLowerCase() });
+  const userRegex = new RegExp(`^${username}$`, "i");
+  const checkDup = await User.findOne({ username: { $regex: userRegex } });
+  console.log(username, checkDup);
   if (checkDup !== null) {
     return res.status(400).json({ error: "username already exists" });
   }

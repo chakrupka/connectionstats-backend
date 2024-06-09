@@ -45,6 +45,24 @@ gamesRouter.post("/game", async (req, res) => {
   res.status(201).json(savedGame);
 });
 
+gamesRouter.get("/user", async (req, res) => {
+  const decodedToken = jwt.verify(getToken(req), process.env.SECRET);
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: "token invalid" });
+  }
+  const user = await User.findById(decodedToken.id);
+
+  const usersGames = await Promise.all(
+    user.games.map((gameId) => Game.findById(gameId))
+  );
+
+  if (usersGames) {
+    res.json(usersGames);
+  } else {
+    res.status(404).end();
+  }
+});
+
 gamesRouter.get("/today", async (req, res) => {
   const todaysGames = await Game.find({ date: newDate() }).populate("user", {
     username: 1,
@@ -57,7 +75,7 @@ gamesRouter.get("/today", async (req, res) => {
   }
 });
 
-gamesRouter.get("/all", async (req, res) => {
+gamesRouter.get("/", async (req, res) => {
   const allGames = await Game.find({}).populate("user", {
     username: 1,
     name: 1,

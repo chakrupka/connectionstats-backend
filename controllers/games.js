@@ -1,27 +1,16 @@
 import { Router } from "express";
-import newDate from "../functions/date.js";
-import parseGame from "../functions/parse_game.js";
+import dateLib from "../libraries/date_lib.js";
+import parseGame from "../libraries/game_lib.js";
 import Game from "../models/game.js";
-import User from "../models/user.js";
-import jwt from "jsonwebtoken";
+import verifyAndGetUser from "../utils/userauth.js";
 
 const gamesRouter = Router();
-
-const getToken = (req) => {
-  const auth = req.get("authorization");
-  if (auth && auth.startsWith("Bearer ")) {
-    return auth.replace("Bearer ", "");
-  }
-};
 
 gamesRouter.post("/game", async (req, res) => {
   const body = req.body;
 
-  const decodedToken = jwt.verify(getToken(req), process.env.SECRET);
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: "token invalid" });
-  }
-  const user = await User.findById(decodedToken.id);
+  const user = await verifyAndGetUser(req, res);
+  if (!user) return;
 
   if (!body) {
     return res.status(400).json({ error: "content missing" });
@@ -46,11 +35,8 @@ gamesRouter.post("/game", async (req, res) => {
 });
 
 gamesRouter.get("/user", async (req, res) => {
-  const decodedToken = jwt.verify(getToken(req), process.env.SECRET);
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: "token invalid" });
-  }
-  const user = await User.findById(decodedToken.id);
+  const user = await verifyAndGetUser(req, res);
+  if (!user) return;
 
   const usersGames = await Promise.all(
     user.games.map((gameId) => Game.findById(gameId))
@@ -64,7 +50,9 @@ gamesRouter.get("/user", async (req, res) => {
 });
 
 gamesRouter.get("/today", async (req, res) => {
-  const todaysGames = await Game.find({ date: newDate() }).populate("user", {
+  const todaysGames = await Game.find({
+    date: dateLib.newDateEST(),
+  }).populate("user", {
     username: 1,
     name: 1,
   });

@@ -23,7 +23,7 @@ gamesRouter.post("/game", async (req, res) => {
     score: gameInfo.score ? parseInt(gameInfo.score) : null,
     order: gameInfo.order,
     tries: parseInt(gameInfo.tries),
-    date: newDate(),
+    date: dateLib.newDateEST(),
     user: user.id,
   });
 
@@ -49,7 +49,7 @@ gamesRouter.get("/user", async (req, res) => {
   }
 });
 
-gamesRouter.get("/today", async (req, res) => {
+gamesRouter.get("/top/today", async (req, res) => {
   const todaysGames = await Game.find({
     date: dateLib.newDateEST(),
   }).populate("user", {
@@ -57,19 +57,27 @@ gamesRouter.get("/today", async (req, res) => {
     name: 1,
   });
   if (todaysGames) {
+    todaysGames.sort((a, b) =>
+      b.score - a.score === 0 ? a.tries - b.tries : b.score - a.score
+    );
+    todaysGames.splice(10);
     res.json(todaysGames);
   } else {
     res.status(404).end();
   }
 });
 
-gamesRouter.get("/", async (req, res) => {
+gamesRouter.get("/top/all", async (req, res) => {
   const allGames = await Game.find({}).populate("user", {
     username: 1,
     name: 1,
   });
   if (allGames) {
     const gamesWithUser = allGames.filter((game) => game.user != null);
+    gamesWithUser.sort((a, b) =>
+      b.score - a.score === 0 ? a.tries - b.tries : b.score - a.score
+    );
+    gamesWithUser.splice(10);
     res.json(gamesWithUser);
   } else {
     res.status(404).end();

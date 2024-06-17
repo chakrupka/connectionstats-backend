@@ -15,7 +15,7 @@ loginRouter.post("/", async (req, res) => {
   const userRegex = new RegExp(`^${username}$`, "i");
   const user = await User.findOne({ username: { $regex: userRegex } });
   const passwordCorrect =
-    user === null ? false : await bcrypt.compare(password, user.passwordHash);
+    user == null ? false : await bcrypt.compare(password, user.passwordHash);
 
   if (!(user && passwordCorrect)) {
     return res.status(401).json({ error: "invalid username or password" });

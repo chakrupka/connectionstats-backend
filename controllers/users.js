@@ -3,9 +3,9 @@
 
 import { Router } from "express";
 import User from "../models/user.js";
-import newDate from "../functions/date.js";
+import dateLib from "../libraries/date_lib.js";
 import bcrypt from "bcrypt";
-import validators from "../functions/validators.js";
+import validators from "../libraries/validators.js";
 
 const usersRouter = Router();
 
@@ -29,15 +29,13 @@ usersRouter.post("/", async (req, res) => {
   }
   const userRegex = new RegExp(`^${username}$`, "i");
   const checkDup = await User.findOne({ username: { $regex: userRegex } });
-  console.log(username, checkDup);
   if (checkDup !== null) {
     return res.status(400).json({ error: "username already exists" });
   }
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
-  const created = newDate();
-
+  const created = dateLib.newDateEST();
   const user = new User({
     username,
     name,

@@ -1,40 +1,3 @@
-// const failInput = `Connections
-// Puzzle #282
-// 🟨🟨🟨🟨
-// 🟦🟦🟦🟦
-// 🟪🟪🟩🟩
-// 🟪🟩🟪🟩
-// 🟩🟪🟪🟩
-// 🟪🟪🟩🟩`;
-const failInput = {
-  number: "282",
-  sequence: ["yyyy", "bbbb", "ppgg", "pgpg", "gppg", "ppgg"],
-};
-
-// const successInput = `Connections
-// Puzzle #282
-// 🟨🟨🟨🟨
-// 🟦🟦🟦🟦
-// 🟪🟪🟩🟩
-// 🟪🟩🟪🟩
-// 🟩🟩🟩🟩
-// 🟪🟪🟪🟪`;
-const successInput = {
-  number: "282",
-  sequence: ["yyyy", "bbbb", "ppgg", "pgpg", "gggg", "pppp"],
-};
-
-// const perfectInput = `Connections
-// Puzzle #282
-// 🟪🟪🟪🟪
-// 🟦🟦🟦🟦
-// 🟩🟩🟩🟩
-// 🟨🟨🟨🟨`;
-const perfectInput = {
-  number: "282",
-  sequence: ["pppp", "bbbb", "gggg", "yyyy"],
-};
-
 const checkValidLine = (line) => {
   if (
     line === "yyyy" ||
@@ -104,9 +67,5 @@ const parseGame = (input) => {
   }
   return game;
 };
-
-// console.log(parseGame(failInput));
-// console.log(parseGame(successInput));
-// console.log(parseGame(perfectInput));
 
 export default parseGame;

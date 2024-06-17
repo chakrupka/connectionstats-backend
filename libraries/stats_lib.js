@@ -4,14 +4,13 @@
  */
 
 import dateLib from "./date_lib.js";
-// import sampleGames from "./games_for_testing.js";
 
 const sortGames = (games) => {
   return games.sort((a, b) => a.number - b.number);
 };
 
 const isAStreak = (game1, game2) => {
-  if (game1.score === null || game2.score === null) return false;
+  if (game1.score == null || game2.score == null) return false;
   return game1.number + 1 === game2.number || game1.number - 1 === game2.number;
 };
 
@@ -28,7 +27,7 @@ const longestStreak = (gamesArray) => {
   while (pos1 < games.length) {
     let start = pos1,
       end = pos1;
-    if (games[start].score === null) {
+    if (games[start].score == null) {
       pos1++;
       pos2++;
       continue;
@@ -52,7 +51,7 @@ const currentStreak = (gamesArray) => {
   const games = sortGames(gamesArray);
   if (
     games[games.length - 1].number !== dateLib.getTodayPuzzleNum() ||
-    games[games.length - 1].score === null
+    games[games.length - 1].score == null
   ) {
     return 0;
   }
@@ -90,7 +89,7 @@ const highestScore = (games) => {
 };
 
 const solvePercent = (games) => {
-  if (!games) return 0;
+  if (!games || numSolved(games) === 0) return 0;
   return ((numSolved(games) * 100) / games.length).toFixed(0);
 };
 
@@ -98,10 +97,6 @@ const solvePercent = (games) => {
  * - Number of perfect games
  * - % of games in which [color] was solved first (for each color)
  */
-
-// console.log(sortGames(sampleGames));
-// console.log(currentStreak(sampleGames));
-// console.log(longestStreak(sampleGames));
 
 export default {
   longestStreak,

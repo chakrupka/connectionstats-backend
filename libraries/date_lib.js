@@ -65,17 +65,29 @@ const areDayApart = (date1, date2) => {
 
 const getTodayPuzzleNum = () => {
   const firstDate = DateTime.fromISO("2023-06-11");
-  const testDate = DateTime.fromISO("2023-06-12").setZone("America/New_York");
+  const testDate = DateTime.fromISO("2023-06-11").setZone("America/New_York");
   const todayDate = DateTime.now().setZone("America/New_York");
+
+  console.log("First Date:", firstDate.toISO());
+  console.log("Test Date:", testDate.toISO());
+  console.log("Today Date:", todayDate.toISO());
+
   console.log(
     firstDate.toLocaleString(),
     testDate.toLocaleString(),
     todayDate.toLocaleString()
   );
-  console.log(-firstDate.diff(todayDate, "day").toObject().days);
-  console.log(Math.floor(-firstDate.diff(todayDate, "day").toObject().days));
-  console.log(Math.floor(-testDate.diff(todayDate, "day").toObject().days));
-  return Math.floor(-firstDate.diff(todayDate, "day").toObject().days);
+
+  const diffFirstToday = firstDate.diff(todayDate, "day").toObject().days;
+  const diffTestToday = testDate.diff(todayDate, "day").toObject().days;
+
+  console.log("Difference (First - Today):", diffFirstToday);
+  console.log("Difference (Test - Today):", diffTestToday);
+
+  console.log(Math.floor(-diffFirstToday));
+  console.log(-diffTestToday);
+
+  return Math.floor(-diffFirstToday);
 };
 
 // Input is a string of format "YYYY-MM-DD" (ex: "2024-11-19")

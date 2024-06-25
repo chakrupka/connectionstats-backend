@@ -5,6 +5,7 @@
 
 import { Router } from "express";
 import statsLib from "../libraries/stats_lib.js";
+import dateLib from "../libraries/date_lib.js";
 import Game from "../models/game.js";
 import verifyAndGetUser from "../utils/userauth.js";
 
@@ -27,6 +28,8 @@ statsRouter.get("/user", async (req, res) => {
       totalGames: usersGames.length,
     };
 
+    console.log(statsLib.currentStreak(usersGames));
+    console.log(dateLib.getTodayPuzzleNum());
     res.json(stats);
   } else {
     res.status(404).end();

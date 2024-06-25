@@ -64,9 +64,16 @@ const areDayApart = (date1, date2) => {
 };
 
 const getTodayPuzzleNum = () => {
-  const firstDate = DateTime.fromISO("2023-06-11").setZone("America/New_York");
+  const firstDate = DateTime.fromISO("2023-06-11");
+  const test1Date = DateTime.fromISO("2023-06-11").setZone("America/New_York");
+  const test2Date = DateTime.fromISO("2023-06-12").setZone("America/New_York");
   const todayDate = DateTime.now().setZone("America/New_York");
-  console.log(firstDate.toLocaleString(), todayDate.toLocaleString());
+  console.log(
+    firstDate.toLocaleString(),
+    test1Date.toLocaleString(),
+    test2Date.toLocaleString(),
+    todayDate.toLocaleString()
+  );
   console.log(Math.floor(-firstDate.diff(todayDate, "day").toObject().days));
   return Math.floor(-firstDate.diff(todayDate, "day").toObject().days);
 };

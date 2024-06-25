@@ -42,6 +42,8 @@ gamesRouter.get("/user", async (req, res) => {
     user.games.map((gameId) => Game.findById(gameId))
   );
 
+  usersGames.sort((a, b) => b.number - a.number);
+
   if (usersGames) {
     res.json(usersGames);
   } else {
@@ -51,7 +53,7 @@ gamesRouter.get("/user", async (req, res) => {
 
 gamesRouter.get("/top/today", async (req, res) => {
   const todaysGames = await Game.find({
-    date: dateLib.newDateEST(),
+    number: dateLib.getTodayPuzzleNum(),
   }).populate("user", {
     username: 1,
     name: 1,

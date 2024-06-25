@@ -67,8 +67,6 @@ const currentStreak = (gamesArray) => {
     pos1++;
     end = pos2++;
   }
-  console.log(end - start + 1);
-  console.log(dateLib.getTodayPuzzleNum());
   return end - start + 1;
 };
 

@@ -28,8 +28,6 @@ statsRouter.get("/user", async (req, res) => {
       totalGames: usersGames.length,
     };
 
-    console.log(statsLib.currentStreak(usersGames));
-    console.log(dateLib.getTodayPuzzleNum());
     res.json(stats);
   } else {
     res.status(404).end();

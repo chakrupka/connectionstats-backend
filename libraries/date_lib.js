@@ -64,41 +64,26 @@ const areDayApart = (date1, date2) => {
 };
 
 const getTodayPuzzleNum = () => {
-  const firstDate = DateTime.fromISO("2023-06-11");
-  const testDate = DateTime.fromISO("2023-06-11").setZone("America/New_York");
+  const firstDate = DateTime.fromISO("2023-06-11T00:00:00", {
+    zone: "America/New_York",
+  });
   const todayDate = DateTime.now().setZone("America/New_York");
-
-  console.log("First Date:", firstDate.toISO());
-  console.log("Test Date:", testDate.toISO());
-  console.log("Today Date:", todayDate.toISO());
-
-  console.log(
-    firstDate.toLocaleString(),
-    testDate.toLocaleString(),
-    todayDate.toLocaleString()
-  );
-
-  const diffFirstToday = firstDate.diff(todayDate, "day").toObject().days;
-  const diffTestToday = testDate.diff(todayDate, "day").toObject().days;
-
-  console.log("Difference (First - Today):", diffFirstToday);
-  console.log("Difference (Test - Today):", diffTestToday);
-
-  console.log(Math.floor(-diffFirstToday));
-  console.log(-diffTestToday);
-
-  return Math.floor(-diffFirstToday);
+  return Math.floor(-firstDate.diff(todayDate, "day").toObject().days);
 };
 
 // Input is a string of format "YYYY-MM-DD" (ex: "2024-11-19")
 const dateToPuzzleNum = (dateStr) => {
-  const firstDate = DateTime.fromISO("2023-06-11");
+  const firstDate = DateTime.fromISO("2023-06-11T00:00:00", {
+    zone: "America/New_York",
+  });
   const puzzleDate = DateTime.fromISO(dateStr).setZone("America/New_York");
   return Math.floor(-firstDate.diff(puzzleDate, "day").toObject().days);
 };
 
 const puzzleNumToDate = (number) => {
-  const firstDate = DateTime.fromISO("2023-06-11");
+  const firstDate = DateTime.fromISO("2023-06-11T00:00:00", {
+    zone: "America/New_York",
+  });
   return firstDate.plus({ days: number }).toFormat("yyyy-LL-dd");
 };
 

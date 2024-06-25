@@ -22,6 +22,7 @@ statsRouter.get("/user", async (req, res) => {
   if (usersGames) {
     const stats = {
       currentStreak: statsLib.currentStreak(usersGames),
+      prevStreak: statsLib.prevStreak(usersGames),
       longestStreak: statsLib.longestStreak(usersGames),
       solvedGames: statsLib.numSolved(usersGames),
       solvePercent: statsLib.solvePercent(usersGames),

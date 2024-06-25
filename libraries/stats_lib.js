@@ -70,6 +70,33 @@ const currentStreak = (gamesArray) => {
   return end - start + 1;
 };
 
+const prevStreak = (gamesArray) => {
+  if (!gamesArray || gamesArray.length < 1) {
+    return 0;
+  }
+
+  const games = sortGames(gamesArray);
+  if (
+    games[games.length - 1].number !== dateLib.getTodayPuzzleNum() - 1 ||
+    games[games.length - 1].score == null
+  ) {
+    return 0;
+  }
+
+  let pos1 = 1;
+  let pos2 = 2;
+  let start = pos1,
+    end = pos1;
+  while (
+    pos2 <= games.length &&
+    isAStreak(games[games.length - pos1], games[games.length - pos2])
+  ) {
+    pos1++;
+    end = pos2++;
+  }
+  return end - start + 1;
+};
+
 const numSolved = (games) => {
   if (!games) return 0;
   let solved = 0;
@@ -101,6 +128,7 @@ const solvePercent = (games) => {
 export default {
   longestStreak,
   currentStreak,
+  prevStreak,
   numSolved,
   highestScore,
   solvePercent,

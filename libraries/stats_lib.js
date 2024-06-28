@@ -11,9 +11,6 @@ const sortGames = (games) => {
 
 const isAStreak = (game1, game2) => {
   // if (game1.score == null || game2.score == null) return false;
-  console.log(
-    game1.number + 1 === game2.number || game1.number - 1 === game2.number
-  );
   return game1.number + 1 === game2.number || game1.number - 1 === game2.number;
 };
 

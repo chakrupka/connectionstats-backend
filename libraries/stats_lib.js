@@ -10,7 +10,10 @@ const sortGames = (games) => {
 };
 
 const isAStreak = (game1, game2) => {
-  if (game1.score == null || game2.score == null) return false;
+  // if (game1.score == null || game2.score == null) return false;
+  console.log(
+    game1.number + 1 === game2.number || game1.number - 1 === game2.number
+  );
   return game1.number + 1 === game2.number || game1.number - 1 === game2.number;
 };
 
@@ -50,8 +53,8 @@ const currentStreak = (gamesArray) => {
 
   const games = sortGames(gamesArray);
   if (
-    games[games.length - 1].number !== dateLib.getTodayPuzzleNum() ||
-    games[games.length - 1].score == null
+    games[games.length - 1].number !== dateLib.getTodayPuzzleNum()
+    // || games[games.length - 1].score == null
   ) {
     return 0;
   }
@@ -77,8 +80,9 @@ const prevStreak = (gamesArray) => {
 
   const games = sortGames(gamesArray);
   if (
-    games[games.length - 1].number !== dateLib.getTodayPuzzleNum() - 1 ||
-    games[games.length - 1].score == null
+    games[games.length - 1].number !==
+    dateLib.getTodayPuzzleNum() - 1
+    // || games[games.length - 1].score == null
   ) {
     return 0;
   }

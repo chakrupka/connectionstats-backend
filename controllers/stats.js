@@ -5,7 +5,6 @@
 
 import { Router } from "express";
 import statsLib from "../libraries/stats_lib.js";
-import dateLib from "../libraries/date_lib.js";
 import Game from "../models/game.js";
 import verifyAndGetUser from "../utils/userauth.js";
 
@@ -15,21 +14,13 @@ statsRouter.get("/user", async (req, res) => {
   const user = await verifyAndGetUser(req, res);
   if (!user) return;
 
-  const usersGames = await Promise.all(
+  const userGames = await Promise.all(
     user.games.map((gameId) => Game.findById(gameId))
   );
 
-  if (usersGames) {
-    const stats = {
-      currentStreak: statsLib.currentStreak(usersGames),
-      prevStreak: statsLib.prevStreak(usersGames),
-      longestStreak: statsLib.longestStreak(usersGames),
-      solvedGames: statsLib.numSolved(usersGames),
-      solvePercent: statsLib.solvePercent(usersGames),
-      totalGames: usersGames.length,
-    };
-
-    res.json(stats);
+  if (userGames) {
+    const userStats = statsLib.getAllUserStats(userGames);
+    res.json(userStats);
   } else {
     res.status(404).end();
   }

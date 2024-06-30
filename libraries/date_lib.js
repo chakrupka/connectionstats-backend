@@ -63,12 +63,22 @@ const areDayApart = (date1, date2) => {
   );
 };
 
+// get the current day's puzzle number. Day follows EST.
 const getTodayPuzzleNum = () => {
   const firstDate = DateTime.fromISO("2023-06-11T00:00:00", {
     zone: "America/New_York",
   });
   const todayDate = DateTime.now().setZone("America/New_York");
   return Math.floor(-firstDate.diff(todayDate, "day").toObject().days);
+};
+
+// get the the previous day's puzzle number. Day follows EST.
+const getYesterdayPuzzleNum = () => {
+  const firstDate = DateTime.fromISO("2023-06-11T00:00:00", {
+    zone: "America/New_York",
+  });
+  const todayDate = DateTime.now().setZone("America/New_York");
+  return Math.floor(-firstDate.diff(todayDate, "day").toObject().days) - 1;
 };
 
 // Input is a string of format "YYYY-MM-DD" (ex: "2024-11-19")
@@ -95,6 +105,7 @@ export default {
   sortDates,
   areDayApart,
   getTodayPuzzleNum,
+  getYesterdayPuzzleNum,
   dateToPuzzleNum,
   puzzleNumToDate,
 };

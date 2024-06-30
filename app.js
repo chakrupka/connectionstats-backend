@@ -9,6 +9,7 @@ import gamesRouter from "./controllers/games.js";
 import usersRouter from "./controllers/users.js";
 import loginRouter from "./controllers/login.js";
 import statsRouter from "./controllers/stats.js";
+import topRouter from "./controllers/top.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/api/games", gamesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/stats", statsRouter);
+app.use("/api/top", topRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

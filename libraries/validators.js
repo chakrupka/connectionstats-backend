@@ -18,14 +18,14 @@ const isValidPassword = (password) => {
 
 /*
  * Username must be:
- * - between 3 and 32 characters long
+ * - between 3 and 16 characters long
  * - include only ASCII-standard symbols
  * - no accented characters
  * - no whitespace
  */
 const isValidUsername = (username) => {
   const regex =
-    /^(?=.{3,32}$)(?!.*\.\.)(?!^\.)[A-Za-z0-9._]*(?=.*[A-Za-z])[A-Za-z0-9._]*$/;
+    /^(?=.{3,16}$)(?!.*\.\.)(?!^\.)[A-Za-z0-9._]*(?=.*[A-Za-z])[A-Za-z0-9._]*$/;
   return regex.test(username);
 };
 

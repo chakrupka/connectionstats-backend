@@ -100,7 +100,7 @@ const highestScore = (games) => {
 const solvePercent = (games) => {
   const solved = numSolved(games);
   if (solved === 0) return 0;
-  return ((solved * 100) / games.length).toFixed(2);
+  return parseFloat(((solved * 100) / games.length).toFixed(0));
 };
 
 const numPerfect = (games) => {
@@ -119,7 +119,7 @@ const avgScore = (games) => {
     if (game.score >= 0) totalScore += game.score;
     else totalScore -= 5; // penalty for failing
   });
-  return (totalScore / games.length).toFixed(2);
+  return parseFloat((totalScore / games.length).toFixed(0));
 };
 
 // get an object containing a single user's stats, including:
@@ -145,10 +145,14 @@ const getAllUserStats = (userGames) => {
 const getByNumSubmitted = (users) => {
   const usersWithNumGames = users.reduce((acc, user) => {
     const numGames = user.games.length;
-    if (numGames) acc.push([user.username, numGames]);
+    if (numGames)
+      acc.push({
+        user: { username: user.username, id: user.id },
+        score: numGames,
+      });
     return acc;
   }, []);
-  usersWithNumGames.sort((a, b) => b[1] - a[1]);
+  usersWithNumGames.sort((a, b) => b.score - a.score);
   return usersWithNumGames;
 };
 
@@ -156,10 +160,14 @@ const getByNumSubmitted = (users) => {
 const getByNumSolved = (users) => {
   const usersWithNumSolved = users.reduce((acc, user) => {
     const solved = numSolved(user.games);
-    if (solved) acc.push([user.username, solved]);
+    if (solved)
+      acc.push({
+        user: { username: user.username, id: user.id },
+        score: solved,
+      });
     return acc;
   }, []);
-  usersWithNumSolved.sort((a, b) => b[1] - a[1]);
+  usersWithNumSolved.sort((a, b) => b.score - a.score);
   return usersWithNumSolved;
 };
 
@@ -167,10 +175,14 @@ const getByNumSolved = (users) => {
 const getByNumPerfect = (users) => {
   const usersWithNumPerfect = users.reduce((acc, user) => {
     const perfect = numPerfect(user.games);
-    if (perfect) acc.push([user.username, perfect]);
+    if (perfect)
+      acc.push({
+        user: { username: user.username, id: user.id },
+        score: perfect,
+      });
     return acc;
   }, []);
-  usersWithNumPerfect.sort((a, b) => b[1] - a[1]);
+  usersWithNumPerfect.sort((a, b) => b.score - a.score);
   return usersWithNumPerfect;
 };
 
@@ -178,11 +190,14 @@ const getByNumPerfect = (users) => {
 const getBySolveRate = (users) => {
   const usersWithSolveRate = users.reduce((acc, user) => {
     if (user.games.length >= 10) {
-      acc.push([user.username, solvePercent(user.games)]);
+      acc.push({
+        user: { username: user.username, id: user.id },
+        score: solvePercent(user.games),
+      });
     }
     return acc;
   }, []);
-  usersWithSolveRate.sort((a, b) => b[1] - a[1]);
+  usersWithSolveRate.sort((a, b) => b.score - a.score);
   return usersWithSolveRate;
 };
 
@@ -190,11 +205,14 @@ const getBySolveRate = (users) => {
 const getByAvgScore = (users) => {
   const usersWithAvergageScore = users.reduce((acc, user) => {
     if (user.games.length >= 10) {
-      acc.push([user.username, avgScore(user.games)]);
+      acc.push({
+        user: { username: user.username, id: user.id },
+        score: avgScore(user.games),
+      });
     }
     return acc;
   }, []);
-  usersWithAvergageScore.sort((a, b) => b[1] - a[1]);
+  usersWithAvergageScore.sort((a, b) => b.score - a.score);
   return usersWithAvergageScore;
 };
 
@@ -203,11 +221,14 @@ const getByLongStreak = (users) => {
   const usersWithLongStreak = users.reduce((acc, user) => {
     const longStreak = longestStreak(user.games);
     if (longStreak >= 2) {
-      acc.push([user.username, longStreak]);
+      acc.push({
+        user: { username: user.username, id: user.id },
+        score: longStreak,
+      });
     }
     return acc;
   }, []);
-  usersWithLongStreak.sort((a, b) => b[1] - a[1]);
+  usersWithLongStreak.sort((a, b) => b.score - a.score);
   return usersWithLongStreak;
 };
 

@@ -6,7 +6,7 @@
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 
-const getToken = (req) => {
+export const getToken = (req) => {
   const auth = req.get("authorization");
   if (auth && auth.startsWith("Bearer ")) {
     return auth.replace("Bearer ", "");

@@ -85,6 +85,7 @@ gamesRouter.post("/text", async (req, res) => {
   const savedGame = await game.save();
   user.games = user.games.concat(savedGame._id);
   await user.save();
+  console.log("saved game");
 
   res.status(201).json(savedGame);
 });

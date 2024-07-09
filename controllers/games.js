@@ -2,7 +2,9 @@ import { Router } from "express";
 import dateLib from "../libraries/date_lib.js";
 import parseGame from "../libraries/game_lib.js";
 import Game from "../models/game.js";
-import verifyAndGetUser from "../utils/userauth.js";
+import User from "../models/user.js";
+import verifyAndGetUser, { getToken } from "../utils/userauth.js";
+import { ObjectId } from "mongodb";
 
 const gamesRouter = Router();
 
@@ -16,7 +18,16 @@ gamesRouter.post("/game", async (req, res) => {
     return res.status(400).json({ error: "content missing" });
   }
 
-  const gameInfo = parseGame(body);
+  const gameInfo = parseGame(body.game);
+  const userId = ObjectId.createFromHexString(user.id);
+  const duplicate = await Game.findOne({
+    number: parseInt(gameInfo.number),
+    user: userId,
+  });
+  if (duplicate) {
+    return res.status(409).json({ error: "game already submitted" });
+  }
+
   const game = new Game({
     number: parseInt(gameInfo.number),
     sequence: gameInfo.sequence,
@@ -30,6 +41,51 @@ gamesRouter.post("/game", async (req, res) => {
   const savedGame = await game.save();
   user.games = user.games.concat(savedGame._id);
   await user.save();
+
+  res.status(201).json(savedGame);
+});
+
+gamesRouter.post("/text", async (req, res) => {
+  const body = req.body;
+
+  if (process.env.IMESSAGE_TOKEN !== getToken(req)) {
+    return res.status(401).json({ error: "unauthorized" });
+  }
+
+  if (!body) {
+    return res.status(400).json({ error: "content missing" });
+  }
+
+  const user = await User.findOne({ username: body.username });
+
+  if (!user) {
+    return res.status(400).json({ error: "content missing" });
+  }
+
+  const gameInfo = parseGame(body.game);
+  const userId = ObjectId.createFromHexString(user.id);
+  const duplicate = await Game.findOne({
+    number: parseInt(gameInfo.number),
+    user: userId,
+  });
+  if (duplicate) {
+    return res.status(409).json({ error: "game already submitted" });
+  }
+
+  const game = new Game({
+    number: parseInt(gameInfo.number),
+    sequence: gameInfo.sequence,
+    score: gameInfo.score ? parseInt(gameInfo.score) : null,
+    order: gameInfo.order,
+    tries: parseInt(gameInfo.tries),
+    date: dateLib.newDateEST(),
+    user: user.id,
+  });
+
+  const savedGame = await game.save();
+  user.games = user.games.concat(savedGame._id);
+  await user.save();
+  console.log("saved game");
 
   res.status(201).json(savedGame);
 });

@@ -18,7 +18,7 @@ gamesRouter.post("/game", async (req, res) => {
     return res.status(400).json({ error: "content missing" });
   }
 
-  const gameInfo = parseGame(body.game);
+  const gameInfo = parseGame(body);
   const userId = ObjectId.createFromHexString(user.id);
   const duplicate = await Game.findOne({
     number: parseInt(gameInfo.number),

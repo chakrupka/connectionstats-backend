@@ -17,6 +17,13 @@ gamesRouter.post("/game", async (req, res) => {
   }
 
   const gameInfo = parseGame(body);
+
+  const duplicate = await Game.find({ number: parseInt(gameInfo.number) });
+  if (duplicate.length > 0) {
+    console.log("duplicate game: ", duplicate);
+    return res.status(409).json({ error: "game already submitted" });
+  }
+
   const game = new Game({
     number: parseInt(gameInfo.number),
     sequence: gameInfo.sequence,

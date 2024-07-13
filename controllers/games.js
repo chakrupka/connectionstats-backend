@@ -1,6 +1,6 @@
 import { Router } from "express";
 import dateLib from "../libraries/date_lib.js";
-import parseGame from "../libraries/game_lib.js";
+import game_lib from "../libraries/game_lib.js";
 import Game from "../models/game.js";
 import User from "../models/user.js";
 import verifyAndGetUser, { getToken } from "../utils/userauth.js";
@@ -18,7 +18,14 @@ gamesRouter.post("/game", async (req, res) => {
     return res.status(400).json({ error: "content missing" });
   }
 
-  const gameInfo = parseGame(body);
+  let gameInfo;
+  if (req.get("shortcut")) {
+    const preppedGame = game_lib.prepGame(body.game);
+    gameInfo = game_lib.parseGame(preppedGame);
+  } else {
+    gameInfo = game_lib.parseGame(body);
+  }
+
   const userId = ObjectId.createFromHexString(user.id);
   const duplicate = await Game.findOne({
     number: parseInt(gameInfo.number),
@@ -62,7 +69,7 @@ gamesRouter.post("/text", async (req, res) => {
     return res.status(400).json({ error: "content missing" });
   }
 
-  const gameInfo = parseGame(body.game);
+  const gameInfo = game_lib.parseGame(body.game);
   const userId = ObjectId.createFromHexString(user.id);
   const duplicate = await Game.findOne({
     number: parseInt(gameInfo.number),
